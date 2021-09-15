@@ -9,7 +9,7 @@ export function Layout({children}: ILayoutProps) {
     return (
         <>
             <Header/>
-            <main className={'container mx-auto'}>
+            <main className={'container mx-auto mb-6'}>
                 {children}
             </main>
         </>

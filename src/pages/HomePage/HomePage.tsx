@@ -1,12 +1,12 @@
 import React from 'react';
 import {Layout} from "../../components/Layout";
-import {TasksList} from "../../components/TasksList";
+import {TasksListContainer} from "../../components/TasksListContainer";
 
 export function HomePage() {
     return (
         <Layout>
             <div className={'grid grid-cols-3 gap-4'}>
-               <TasksList/>
+               <TasksListContainer/>
             </div>
             <div className={'col-span-2'}>
 
