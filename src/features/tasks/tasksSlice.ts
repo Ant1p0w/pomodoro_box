@@ -4,7 +4,8 @@ import {RootState} from "../../store";
 export type TTask = {
     uid: string,
     name: string,
-    pomodoro_cnt: number
+    pomodoro_cnt: number,
+    time_left: number
 }
 
 interface ITasksState {
@@ -28,6 +29,6 @@ export const tasksSlice = createSlice({
 export const {add} = tasksSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const tasks = (state: RootState) => state.tasks.items
+export const tasks = (state: RootState) => state.tasks
 
 export default tasksSlice.reducer
