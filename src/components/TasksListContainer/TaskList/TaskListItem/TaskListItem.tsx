@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useState} from 'react';
+import React, {MouseEventHandler, Ref, useEffect, useRef, useState} from 'react';
 import {TTask} from "../../../../features/tasks/tasksSlice";
 import {TaskMenu} from "../../TaskMenu";
 
@@ -25,9 +25,7 @@ export function TaskListItem({task, isMenuShownId, handleShowMenu}: ITaskListIte
                         <circle cx="23" cy="3" r="3" fill="#C4C4C4"/>
                     </svg>
                 </button>
-                {isMenuShownId === task.uid && (
-                    <TaskMenu/>
-                )}
+                <TaskMenu isOpen={isMenuShownId === task.uid} taskUid={task.uid}/>
             </div>
         </li>
     );
