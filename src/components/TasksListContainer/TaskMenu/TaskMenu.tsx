@@ -1,19 +1,22 @@
 import React from 'react';
+import {deleteTask, increaseTask, decreaseTask, editTask, TTask} from '../../../features/tasks/tasksSlice'
+import {useAppDispatch} from "../../../hooks";
 
 interface ITaskMenuProps {
     isOpen: boolean,
-    taskUid: string,
+    task: TTask,
 }
 
-export function TaskMenu({isOpen, taskUid}: ITaskMenuProps) {
+export function TaskMenu({isOpen, task}: ITaskMenuProps) {
     const itemClassList = 'px-8 py-2 text-gray-300 cursor-pointer hover:bg-gray-100 flex items-center';
+    const dispatch = useAppDispatch();
 
     if (!isOpen) return null;
 
     return (
         <div className={'absolute top-8 z-10 bg-white border transform -translate-x-2/4 left-1/2'}>
             <ul>
-                <li className={itemClassList}>
+                <li className={itemClassList} onClick={() =>{dispatch(increaseTask(task.uid))}}>
                     <svg className={'mr-2'} width="18" height="18" viewBox="0 0 18 18" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -22,7 +25,7 @@ export function TaskMenu({isOpen, taskUid}: ITaskMenuProps) {
                     </svg>
                     <span>Увеличить</span>
                 </li>
-                <li className={itemClassList}>
+                <li className={task.pomodoro_cnt === 1 ? itemClassList + ' pointer-events-none filter grayscale' : itemClassList} onClick={() =>{dispatch(decreaseTask(task.uid))}}>
                     <svg className={'mr-2'} width="18" height="18" viewBox="0 0 18 18" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -32,7 +35,7 @@ export function TaskMenu({isOpen, taskUid}: ITaskMenuProps) {
                     </svg>
                     <span>Уменьшить</span>
                 </li>
-                <li className={itemClassList}>
+                <li className={itemClassList} onClick={() =>{dispatch(editTask(task.uid))}}>
                     <svg className={'mr-2'} width="18" height="18" viewBox="0 0 18 18" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -41,7 +44,7 @@ export function TaskMenu({isOpen, taskUid}: ITaskMenuProps) {
                     </svg>
                     <span>Редактировать</span>
                 </li>
-                <li className={itemClassList}>
+                <li className={itemClassList} onClick={() =>{dispatch(deleteTask(task.uid))}}>
                     <svg className={'mr-2'} width="18" height="18" viewBox="0 0 18 18" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path

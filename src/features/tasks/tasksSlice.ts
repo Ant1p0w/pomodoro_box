@@ -5,7 +5,8 @@ export type TTask = {
     uid: string,
     name: string,
     pomodoro_cnt: number,
-    time_left: number
+    time_left: number,
+    is_edit: boolean
 }
 
 interface ITasksState {
@@ -20,13 +21,53 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState: initialTasksState,
     reducers: {
-        add: (state, action: PayloadAction<TTask>) => {
+        addTask: (state, action: PayloadAction<TTask>) => {
             state.items.push(action.payload);
+        },
+        deleteTask: (state, action: PayloadAction<string>) => {
+            let uid = action.payload;
+
+            state.items = state.items.filter((item) => {
+                return item.uid !== uid;
+            });
+        },
+        increaseTask: (state, action: PayloadAction<string>) => {
+            let uid = action.payload;
+            let findTask = state.items.find(task => task.uid === uid);
+
+            if (findTask) {
+                findTask.pomodoro_cnt++;
+            }
+        },
+        decreaseTask: (state, action: PayloadAction<string>) => {
+            let uid = action.payload;
+            let findTask = state.items.find(task => task.uid === uid);
+
+            if (findTask && findTask.pomodoro_cnt > 1) {
+                findTask.pomodoro_cnt--;
+            }
+        },
+        editTask: (state, action: PayloadAction<string>) => {
+            let uid = action.payload;
+            let findTask = state.items.find(task => task.uid === uid);
+
+            if (findTask) {
+                findTask.is_edit = true;
+            }
+        },
+        renameTask: (state, action: PayloadAction<{ uid: string, name: string }>) => {
+            let {uid, name} = action.payload;
+            let findTask = state.items.find(task => task.uid === uid);
+
+            if (findTask) {
+                findTask.is_edit = false;
+                findTask.name = name;
+            }
         },
     }
 })
 
-export const {add} = tasksSlice.actions
+export const {addTask, deleteTask, increaseTask, decreaseTask, editTask, renameTask} = tasksSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const tasks = (state: RootState) => state.tasks

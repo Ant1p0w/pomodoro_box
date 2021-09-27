@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {add, TTask} from '../../../features/tasks/tasksSlice'
+import {addTask} from '../../../features/tasks/tasksSlice'
 import {useAppDispatch, useAppSelector} from '../../../hooks'
 import {generateGuid} from "../../../helpers/generateUuid";
 
@@ -8,12 +8,20 @@ export function TaskInput() {
     const [taskName, setTaskName] = useState('');
     const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
 
+    const defaultTask = {
+        uid: generateGuid(),
+        name: taskName,
+        pomodoro_cnt: 1,
+        time_left: pomodoroInMin,
+        is_edit: false
+    };
+
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setTaskName(event.target.value);
     }
 
-    function addNewTask(){
-        dispatch(add({uid: generateGuid(), name: taskName, pomodoro_cnt: 1, time_left: pomodoroInMin}));
+    function addNewTask() {
+        dispatch(addTask(defaultTask));
         setTaskName('');
     }
 
