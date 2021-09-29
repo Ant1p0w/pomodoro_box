@@ -1,21 +1,133 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useAppSelector} from "../../hooks";
+import classNames from "classnames";
+
+interface TControlButton {
+    name: string,
+    onClick: () => void,
+    disabled: boolean
+}
 
 export function TaskContainer() {
+    const tasksList = useAppSelector(state => state.tasks.items);
+    const [task, setTask] = useState(tasksList[0]);
+    const [isPaused, setIsPaused] = useState(false);
+    const [isStarted, setIsStarted] = useState(false);
+
+    useEffect(() => {
+        setTask(tasksList[0]);
+
+    }, [tasksList]);
+
+
+    function handleStart() {
+        setIsStarted(true);
+    }
+
+    function handleStop() {
+        setIsStarted(false);
+    }
+
+    function handlePause() {
+        setIsPaused(true);
+    }
+
+    function handleResume() {
+        setIsPaused(false);
+    }
+
+    function handleComplete() {
+
+    }
+
+    function showControlButtons() {
+        let firstButton: TControlButton = {
+            name: 'Старт',
+            onClick: handleStart,
+            disabled: false,
+        }
+
+        let secondButton: TControlButton = {
+            name: 'Стоп',
+            onClick: handleStop,
+            disabled: true,
+        }
+
+        if (isPaused) {
+            firstButton = {
+                name: 'Продолжить',
+                onClick: handleResume,
+                disabled: false,
+            }
+
+            secondButton = {
+                name: 'Сделано',
+                onClick: handleComplete,
+                disabled: false,
+            }
+        } else if (isStarted) {
+            firstButton = {
+                name: 'Пауза',
+                onClick: handlePause,
+                disabled: false,
+            }
+
+            secondButton = {
+                name: 'Стоп',
+                onClick: handleStop,
+                disabled: false,
+            }
+        }
+
+        return (
+            <div className={'text-center flex flex gap-7 justify-center mb-8'}>
+                <button className={'bg-green hover:bg-darkgreen py-4 px-12 text-white'}
+                        onClick={firstButton.onClick}
+                        disabled={firstButton.disabled}>
+                    {firstButton.name}
+                </button>
+                <button className={'py-4 px-12 text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white'}
+                        onClick={secondButton.onClick}
+                        disabled={secondButton.disabled}>
+                    {secondButton.name}
+                </button>
+            </div>
+        )
+    }
+
+
+    //Классы стилей
+    const headClasses = classNames(
+        'py-4 px-10 mb-14 flex justify-between text-white',
+        {
+            'bg-gray-300': !isStarted,
+            'bg-red-500': isStarted,
+        },
+    );
+
+    const textCounterClasses = classNames(
+        'text-10xl font-extralight',
+        {
+            'text-red-500': isStarted,
+        },
+    );
+
     return (
         <div className={'col-span-2'}>
             <div className={'bg-gray-100 pb-8'}>
-                <div className={'py-4 px-10 mb-14 bg-gray-300 flex justify-between text-white'}>
-                    <div>Сверстать сайт</div>
+                <div className={headClasses}>
+                    <div>{task.name}</div>
                     <div>Помидор 1</div>
                 </div>
                 <div className={'text-center mb-8'}>
-                    <div className={'text-10xl font-extralight'}>25:00</div>
-                    <div><span className={'text-gray-300'}>Задача 1</span> - Сверстать сайт</div>
+                    <div className={textCounterClasses}>25:00</div>
+                    <div>
+                        <span className={'text-gray-300'}>Задача 1</span>
+                        <span> -</span>
+                        <span>{task.name}</span>
+                    </div>
                 </div>
-                <div className={'text-center flex flex gap-7 justify-center mb-8'}>
-                    <button className={'bg-green py-4 px-12 text-white'}>Старт</button>
-                    <button className={'py-4 px-12 text-gray-400 border-2'}>Стоп</button>
-                </div>
+                {showControlButtons()}
             </div>
         </div>
     );

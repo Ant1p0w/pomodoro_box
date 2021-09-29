@@ -10,4 +10,10 @@
     li::marker  {
         @apply text-red-500;
     }
+
+    button:disabled{
+        pointer-events: none;
+        border-color: #C4C4C4;
+        color: #C4C4C4;
+    }
 }

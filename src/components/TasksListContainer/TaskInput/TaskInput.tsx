@@ -31,7 +31,7 @@ export function TaskInput() {
                 <input value={taskName} onChange={handleChange} className={'w-80 bg-gray-100 py-4 px-5'}
                        placeholder="Название задачи" required/>
             </div>
-            <button onClick={addNewTask} className={'bg-green py-4 px-12 text-white'}>Добавить
+            <button onClick={addNewTask} className={'bg-green hover:bg-darkgreen py-4 px-12 text-white'}>Добавить
             </button>
         </div>
     );
