@@ -6,13 +6,12 @@ import {generateGuid} from "../../../helpers/generateUuid";
 export function TaskInput() {
     const dispatch = useAppDispatch()
     const [taskName, setTaskName] = useState('');
-    const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
 
     const defaultTask = {
         uid: generateGuid(),
         name: taskName,
         pomodoro_cnt: 1,
-        time_left: pomodoroInMin,
+        pomodoro_finished: 0,
         is_edit: false
     };
 

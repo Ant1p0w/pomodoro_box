@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {useAppSelector} from "../../hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import classNames from "classnames";
+import {deleteTask, finishPomodoro} from "../../features/tasks/tasksSlice";
 
 interface TControlButton {
     name: string,
@@ -11,11 +12,15 @@ interface TControlButton {
 export function TaskContainer() {
     const tasksList = useAppSelector(state => state.tasks.items);
     const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
+    const breaksCounter = useAppSelector(state => state.breaks.breakCounter);
 
     const [task, setTask] = useState(tasksList[0]);
+    const [currentPomodoro, setCurrentPomodoro] = useState(task.pomodoro_finished + 1);
     const [timerInSeconds, setTimerInSeconds] = useState(pomodoroInMin * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
+
+    const dispatch = useAppDispatch();
 
     //Первая задача из списка
     useEffect(() => {
@@ -25,8 +30,15 @@ export function TaskContainer() {
     //Таймер
     useEffect(() => {
         let timerId = setInterval(() => {
+
+            //Если запущен таймер
             if(isStarted && !isPaused && timerInSeconds > 0){
                 setTimerInSeconds(timerInSeconds - 1);
+            }
+
+            //Если время закончиоось
+            if(isStarted && timerInSeconds === 0){
+                handleComplete();
             }
         }, 1000);
 
@@ -54,6 +66,19 @@ export function TaskContainer() {
 
     function handleComplete() {
 
+        //Сбрасываем таймер
+        setIsPaused(false);
+        setIsStarted(false);
+        setTimerInSeconds(pomodoroInMin * 60);
+
+        //Если задача из нескольких помидорок
+        if(currentPomodoro === task.pomodoro_cnt){
+            dispatch(finishPomodoro(task.uid));
+            dispatch(deleteTask(task.uid));
+        }else{
+            dispatch(finishPomodoro(task.uid));
+            setCurrentPomodoro(currentPomodoro + 1);
+        }
     }
 
     function showControlButtons() {
@@ -111,7 +136,6 @@ export function TaskContainer() {
         )
     }
 
-
     function getFormattedTimer(){
         let minutes = parseInt(String(timerInSeconds / 60));
         let seconds = timerInSeconds % 60;
@@ -143,7 +167,7 @@ export function TaskContainer() {
             <div className={'bg-gray-100 pb-8'}>
                 <div className={headClasses}>
                     <div>{task.name}</div>
-                    <div>Помидор 1</div>
+                    <div>Помидор {currentPomodoro}</div>
                 </div>
                 <div className={'text-center mb-8'}>
                     <div className={textCounterClasses}>{getFormattedTimer()}</div>

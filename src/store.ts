@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit'
 import tasksReducer from "./features/tasks/tasksSlice"
 import configReducer from "./features/tasks/configSlice"
+import breaksReducer from "./features/tasks/breaksSlice"
 
 export const store = configureStore({
     reducer: {
         tasks: tasksReducer,
-        config: configReducer
+        config: configReducer,
+        breaks: breaksReducer,
     },
     preloadedState: loadFromLocalStorage()
 })

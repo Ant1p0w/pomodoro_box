@@ -5,7 +5,7 @@ export type TTask = {
     uid: string,
     name: string,
     pomodoro_cnt: number,
-    time_left: number,
+    pomodoro_finished: number,
     is_edit: boolean
 }
 
@@ -39,6 +39,14 @@ export const tasksSlice = createSlice({
                 findTask.pomodoro_cnt++;
             }
         },
+        finishPomodoro: (state, action: PayloadAction<string>) => {
+            let uid = action.payload;
+            let findTask = state.items.find(task => task.uid === uid);
+
+            if (findTask) {
+                findTask.pomodoro_finished++;
+            }
+        },
         decreaseTask: (state, action: PayloadAction<string>) => {
             let uid = action.payload;
             let findTask = state.items.find(task => task.uid === uid);
@@ -67,7 +75,7 @@ export const tasksSlice = createSlice({
     }
 })
 
-export const {addTask, deleteTask, increaseTask, decreaseTask, editTask, renameTask} = tasksSlice.actions
+export const {addTask, deleteTask, increaseTask, decreaseTask, editTask, renameTask, finishPomodoro} = tasksSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const tasks = (state: RootState) => state.tasks

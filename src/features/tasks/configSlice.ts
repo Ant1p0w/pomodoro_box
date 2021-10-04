@@ -5,11 +5,15 @@ export enum ETheme { light, dark }
 
 interface IConfigState {
     pomodoroInMin: number,
+    smallBreakTime: number,
+    largeBreakTime: number,
     theme: ETheme.light
 }
 
 const initialConfigState: IConfigState = {
     pomodoroInMin: 25,
+    smallBreakTime: 5,
+    largeBreakTime: 30,
     theme: ETheme.light,
 }
 
