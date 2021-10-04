@@ -10,15 +10,30 @@ interface TControlButton {
 
 export function TaskContainer() {
     const tasksList = useAppSelector(state => state.tasks.items);
+    const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
+
     const [task, setTask] = useState(tasksList[0]);
+    const [timerInSeconds, setTimerInSeconds] = useState(pomodoroInMin * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
 
+    //Первая задача из списка
     useEffect(() => {
         setTask(tasksList[0]);
-
     }, [tasksList]);
 
+    //Таймер
+    useEffect(() => {
+        let timerId = setInterval(() => {
+            if(isStarted && !isPaused && timerInSeconds > 0){
+                setTimerInSeconds(timerInSeconds - 1);
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(timerId);
+        };
+    }, [isStarted, isPaused, timerInSeconds]);
 
     function handleStart() {
         setIsStarted(true);
@@ -26,6 +41,7 @@ export function TaskContainer() {
 
     function handleStop() {
         setIsStarted(false);
+        setTimerInSeconds(pomodoroInMin * 60);
     }
 
     function handlePause() {
@@ -96,6 +112,16 @@ export function TaskContainer() {
     }
 
 
+    function getFormattedTimer(){
+        let minutes = parseInt(String(timerInSeconds / 60));
+        let seconds = timerInSeconds % 60;
+
+        let strSeconds = seconds < 10 ? '0' + seconds : '' + seconds
+        let strMinutes = minutes < 10 ? '0' + minutes : '' + minutes
+
+        return strMinutes + ':' + strSeconds
+    }
+
     //Классы стилей
     const headClasses = classNames(
         'py-4 px-10 mb-14 flex justify-between text-white',
@@ -120,7 +146,7 @@ export function TaskContainer() {
                     <div>Помидор 1</div>
                 </div>
                 <div className={'text-center mb-8'}>
-                    <div className={textCounterClasses}>25:00</div>
+                    <div className={textCounterClasses}>{getFormattedTimer()}</div>
                     <div>
                         <span className={'text-gray-300'}>Задача 1</span>
                         <span> -</span>
