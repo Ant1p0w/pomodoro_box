@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import classNames from "classnames";
 import {deleteTask, finishPomodoro} from "../../features/tasks/tasksSlice";
+import {increaseBreaksCounter} from "../../features/tasks/breaksSlice";
 
 interface TControlButton {
     name: string,
@@ -12,11 +13,14 @@ interface TControlButton {
 export function TaskContainer() {
     const tasksList = useAppSelector(state => state.tasks.items);
     const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
-    const breakInMin = useAppSelector(state => state.config.smallBreakTime);
+    const smallBreak = useAppSelector(state => state.config.smallBreakTime);
+    const largeBreak = useAppSelector(state => state.config.largeBreakTime);
     const breaksCounter = useAppSelector(state => state.breaks.breakCounter);
 
     const [task, setTask] = useState(tasksList[0]);
     const [currentPomodoro, setCurrentPomodoro] = useState(task.pomodoro_finished + 1);
+    const [currentBreak, setCurrentBreak] = useState(breaksCounter + 1);
+    const [breakInMin, setBreakInMin] = useState(breaksCounter % 4 ? largeBreak : smallBreak);
     const [timerInSeconds, setTimerInSeconds] = useState(pomodoroInMin * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
@@ -37,17 +41,17 @@ export function TaskContainer() {
         let timerId = setInterval(() => {
 
             //Если запущен таймер
-            if((isStarted && !isPaused && timerInSeconds > 0) || (isBreakStarted && !isBreakPaused && timerInSeconds > 0)){
+            if ((isStarted && !isPaused && timerInSeconds > 0) || (isBreakStarted && !isBreakPaused && timerInSeconds > 0)) {
                 setTimerInSeconds(timerInSeconds - 1);
             }
 
             //Если время задачи закончиоось
-            if(isStarted && timerInSeconds === 0){
+            if (isStarted && timerInSeconds === 0) {
                 handleCompleteTask();
             }
 
             //Если время перерыва закончиоось
-            if(isBreakStarted && timerInSeconds === 0){
+            if (isBreakStarted && timerInSeconds === 0) {
                 handleCompleteBreak();
             }
         }, 1000);
@@ -58,9 +62,9 @@ export function TaskContainer() {
     }, [isStarted, isPaused, isBreakStarted, isBreakPaused, timerInSeconds]);
 
     function handleStart() {
-        if(isTimeToBreak){
+        if (isTimeToBreak) {
             setIsBreakStarted(true);
-        }else{
+        } else {
             setIsStarted(true);
         }
     }
@@ -71,17 +75,17 @@ export function TaskContainer() {
     }
 
     function handlePause() {
-        if(isTimeToBreak){
+        if (isTimeToBreak) {
             setIsBreakPaused(true);
-        }else{
+        } else {
             setIsPaused(true);
         }
     }
 
     function handleResume() {
-        if(isTimeToBreak){
+        if (isTimeToBreak) {
             setIsBreakPaused(false);
-        }else{
+        } else {
             setIsPaused(false);
         }
     }
@@ -95,10 +99,10 @@ export function TaskContainer() {
         setIsTimeToBreak(true);
 
         //Если задача из нескольких помидорок
-        if(currentPomodoro === task.pomodoro_cnt){
+        if (currentPomodoro === task.pomodoro_cnt) {
             dispatch(finishPomodoro(task.uid));
             dispatch(deleteTask(task.uid));
-        }else{
+        } else {
             dispatch(finishPomodoro(task.uid));
             setCurrentPomodoro(currentPomodoro + 1);
         }
@@ -111,6 +115,7 @@ export function TaskContainer() {
         setIsBreakStarted(false);
         setIsTimeToBreak(false);
         setTimerInSeconds(pomodoroInMin * 60);
+        dispatch(increaseBreaksCounter());
     }
 
     function showControlButtons() {
@@ -168,7 +173,7 @@ export function TaskContainer() {
         )
     }
 
-    function getFormattedTimer(){
+    function getFormattedTimer() {
         let minutes = parseInt(String(timerInSeconds / 60));
         let seconds = timerInSeconds % 60;
 
@@ -200,7 +205,7 @@ export function TaskContainer() {
                 <div className={headClasses}>
                     <div>{task.name}</div>
                     {isTimeToBreak ?
-                        <div>Перерыв</div> : <div>Помидор {currentPomodoro}</div>
+                        <div>Перерыв {currentBreak}</div> : <div>Помидор {currentPomodoro}</div>
                     }
                 </div>
                 <div className={'text-center mb-8'}>
