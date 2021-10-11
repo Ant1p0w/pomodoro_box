@@ -12,6 +12,7 @@ interface TControlButton {
 export function TaskContainer() {
     const tasksList = useAppSelector(state => state.tasks.items);
     const pomodoroInMin = useAppSelector(state => state.config.pomodoroInMin);
+    const breakInMin = useAppSelector(state => state.config.smallBreakTime);
     const breaksCounter = useAppSelector(state => state.breaks.breakCounter);
 
     const [task, setTask] = useState(tasksList[0]);
@@ -19,6 +20,10 @@ export function TaskContainer() {
     const [timerInSeconds, setTimerInSeconds] = useState(pomodoroInMin * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
+
+    const [isTimeToBreak, setIsTimeToBreak] = useState(false);
+    const [isBreakStarted, setIsBreakStarted] = useState(false);
+    const [isBreakPaused, setIsBreakPaused] = useState(false);
 
     const dispatch = useAppDispatch();
 
@@ -32,23 +37,32 @@ export function TaskContainer() {
         let timerId = setInterval(() => {
 
             //Если запущен таймер
-            if(isStarted && !isPaused && timerInSeconds > 0){
+            if((isStarted && !isPaused && timerInSeconds > 0) || (isBreakStarted && !isBreakPaused && timerInSeconds > 0)){
                 setTimerInSeconds(timerInSeconds - 1);
             }
 
-            //Если время закончиоось
+            //Если время задачи закончиоось
             if(isStarted && timerInSeconds === 0){
-                handleComplete();
+                handleCompleteTask();
+            }
+
+            //Если время перерыва закончиоось
+            if(isBreakStarted && timerInSeconds === 0){
+                handleCompleteBreak();
             }
         }, 1000);
 
         return () => {
             clearInterval(timerId);
         };
-    }, [isStarted, isPaused, timerInSeconds]);
+    }, [isStarted, isPaused, isBreakStarted, isBreakPaused, timerInSeconds]);
 
     function handleStart() {
-        setIsStarted(true);
+        if(isTimeToBreak){
+            setIsBreakStarted(true);
+        }else{
+            setIsStarted(true);
+        }
     }
 
     function handleStop() {
@@ -57,19 +71,28 @@ export function TaskContainer() {
     }
 
     function handlePause() {
-        setIsPaused(true);
+        if(isTimeToBreak){
+            setIsBreakPaused(true);
+        }else{
+            setIsPaused(true);
+        }
     }
 
     function handleResume() {
-        setIsPaused(false);
+        if(isTimeToBreak){
+            setIsBreakPaused(false);
+        }else{
+            setIsPaused(false);
+        }
     }
 
-    function handleComplete() {
+    function handleCompleteTask() {
 
         //Сбрасываем таймер
         setIsPaused(false);
         setIsStarted(false);
-        setTimerInSeconds(pomodoroInMin * 60);
+        setTimerInSeconds(breakInMin * 60);
+        setIsTimeToBreak(true);
 
         //Если задача из нескольких помидорок
         if(currentPomodoro === task.pomodoro_cnt){
@@ -81,6 +104,15 @@ export function TaskContainer() {
         }
     }
 
+    function handleCompleteBreak() {
+
+        //Сбрасываем таймер
+        setIsBreakPaused(false);
+        setIsBreakStarted(false);
+        setIsTimeToBreak(false);
+        setTimerInSeconds(pomodoroInMin * 60);
+    }
+
     function showControlButtons() {
         let firstButton: TControlButton = {
             name: 'Старт',
@@ -89,12 +121,12 @@ export function TaskContainer() {
         }
 
         let secondButton: TControlButton = {
-            name: 'Стоп',
-            onClick: handleStop,
-            disabled: true,
+            name: isTimeToBreak ? 'Пропустить' : 'Стоп',
+            onClick: isTimeToBreak ? handleCompleteBreak : handleStop,
+            disabled: !isTimeToBreak,
         }
 
-        if (isPaused) {
+        if (isPaused || isBreakPaused) {
             firstButton = {
                 name: 'Продолжить',
                 onClick: handleResume,
@@ -102,11 +134,11 @@ export function TaskContainer() {
             }
 
             secondButton = {
-                name: 'Сделано',
-                onClick: handleComplete,
+                name: isTimeToBreak ? 'Пропустить' : 'Сделано',
+                onClick: isTimeToBreak ? handleCompleteBreak : handleCompleteTask,
                 disabled: false,
             }
-        } else if (isStarted) {
+        } else if (isStarted || isBreakStarted) {
             firstButton = {
                 name: 'Пауза',
                 onClick: handlePause,
@@ -114,8 +146,8 @@ export function TaskContainer() {
             }
 
             secondButton = {
-                name: 'Стоп',
-                onClick: handleStop,
+                name: isTimeToBreak ? 'Пропустить' : 'Стоп',
+                onClick: isTimeToBreak ? handleCompleteBreak : handleStop,
                 disabled: false,
             }
         }
@@ -167,7 +199,9 @@ export function TaskContainer() {
             <div className={'bg-gray-100 pb-8'}>
                 <div className={headClasses}>
                     <div>{task.name}</div>
-                    <div>Помидор {currentPomodoro}</div>
+                    {isTimeToBreak ?
+                        <div>Перерыв</div> : <div>Помидор {currentPomodoro}</div>
+                    }
                 </div>
                 <div className={'text-center mb-8'}>
                     <div className={textCounterClasses}>{getFormattedTimer()}</div>
