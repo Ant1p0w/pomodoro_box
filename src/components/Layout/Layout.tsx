@@ -8,12 +8,12 @@ interface ILayoutProps {
 
 export function Layout({children}: ILayoutProps) {
     return (
-        <>
+        <div className={'font-sans'}>
             <Header/>
             <main className={'container mx-auto mb-6'}>
                 {children}
             </main>
             <div id="modal-portal"/>
-        </>
+        </div>
     );
 }

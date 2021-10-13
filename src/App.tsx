@@ -5,6 +5,7 @@ import {StatPage} from './pages/StatPage';
 import {ConfigPage} from './pages/ConfigPage';
 import {useAppDispatch} from "./hooks";
 import {setCurrentDateEmptyItem} from "./features/tasks/statSlice";
+import {Layout} from "./components/Layout";
 
 function App() {
     const dispatch = useAppDispatch();
@@ -15,8 +16,8 @@ function App() {
     }, []);
 
     return (
-        <div className={'font-sans'}>
-            <BrowserRouter>
+        <BrowserRouter>
+            <Layout>
                 <Switch>
                     <Route path="/stat">
                         <StatPage/>
@@ -28,8 +29,8 @@ function App() {
                         <HomePage/>
                     </Route>
                 </Switch>
-            </BrowserRouter>
-        </div>
+            </Layout>
+        </BrowserRouter>
     );
 }
 

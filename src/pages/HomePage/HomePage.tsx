@@ -8,11 +8,9 @@ export function HomePage() {
     const tasksList = useAppSelector(state => state.tasks.items);
 
     return (
-        <Layout>
-            <div className={'grid xl:grid-cols-3 gap-4'}>
-                <TasksListContainer/>
-                {tasksList.length > 0 && <TaskContainer/>}
-            </div>
-        </Layout>
+        <div className={'grid xl:grid-cols-3 gap-4'}>
+            <TasksListContainer/>
+            {tasksList.length > 0 && <TaskContainer/>}
+        </div>
     );
 }
