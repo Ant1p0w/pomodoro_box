@@ -3,6 +3,11 @@ import {useAppDispatch, useAppSelector} from "../../hooks";
 import classNames from "classnames";
 import {deleteTask, finishPomodoro} from "../../features/tasks/tasksSlice";
 import {increaseBreaksCounter} from "../../features/tasks/breaksSlice";
+import {
+    increaseStatStopCounter,
+    increaseStatPauseSec,
+    increaseStatPomodoroCounter, increaseStatWorkSec
+} from "../../features/tasks/statSlice";
 
 interface TControlButton {
     name: string,
@@ -43,6 +48,16 @@ export function TaskContainer() {
             //Если запущен таймер
             if ((isStarted && !isPaused && timerInSeconds > 0) || (isBreakStarted && !isBreakPaused && timerInSeconds > 0)) {
                 setTimerInSeconds(timerInSeconds - 1);
+
+                //Записываем в статистику рабочее время
+                if(!isTimeToBreak){
+                    dispatch(increaseStatWorkSec());
+                }
+            }
+
+            //Если на паузе
+            if(isPaused){
+                dispatch(increaseStatPauseSec());
             }
 
             //Если время задачи закончиоось
@@ -72,6 +87,7 @@ export function TaskContainer() {
     function handleStop() {
         setIsStarted(false);
         setTimerInSeconds(pomodoroInMin * 60);
+        dispatch(increaseStatStopCounter());
     }
 
     function handlePause() {
@@ -100,12 +116,13 @@ export function TaskContainer() {
 
         //Если задача из нескольких помидорок
         if (currentPomodoro === task.pomodoro_cnt) {
-            dispatch(finishPomodoro(task.uid));
             dispatch(deleteTask(task.uid));
         } else {
-            dispatch(finishPomodoro(task.uid));
             setCurrentPomodoro(currentPomodoro + 1);
         }
+
+        dispatch(finishPomodoro(task.uid));
+        dispatch(increaseStatPomodoroCounter());
     }
 
     function handleCompleteBreak() {

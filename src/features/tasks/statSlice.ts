@@ -5,7 +5,7 @@ import moment from "moment";
 export type TStatItem = {
     date: string,
     pomodoro_cnt: number,
-    break_cnt: number,
+    stop_cnt: number,
     work_sec: number,
     pause_sec: number,
 }
@@ -17,7 +17,7 @@ interface IStatState {
 const currentDateStateItem:TStatItem = {
     date: moment().format('YYYY-MM-DD'),
     pomodoro_cnt: 0,
-    break_cnt: 0,
+    stop_cnt: 0,
     work_sec: 0,
     pause_sec: 0,
 }
@@ -30,33 +30,41 @@ export const statSlice = createSlice({
     name: 'stat',
     initialState: initialStatState,
     reducers: {
-        increaseStatPomodoroCounter: (state, action: PayloadAction<string>) => {
-            let date = action.payload;
-            let findStatItem = state.items.find(statItem => statItem.date === date);
+        setCurrentDateEmptyItem: (state) =>{
+            let currentDate = moment().format('YYYY-MM-DD');
+            let findStatItem = state.items.find(statItem => statItem.date === currentDate);
+
+            if(!findStatItem){
+                state.items.push(currentDateStateItem);
+            }
+        },
+        increaseStatPomodoroCounter: (state) => {
+            let currentDate = moment().format('YYYY-MM-DD');
+            let findStatItem = state.items.find(statItem => statItem.date === currentDate);
 
             if (findStatItem) {
                 findStatItem.pomodoro_cnt++;
             }
         },
-        increaseStatBreakCounter: (state, action: PayloadAction<string>) => {
-            let date = action.payload;
-            let findStatItem = state.items.find(statItem => statItem.date === date);
+        increaseStatStopCounter: (state) => {
+            let currentDate = moment().format('YYYY-MM-DD');
+            let findStatItem = state.items.find(statItem => statItem.date === currentDate);
 
             if (findStatItem) {
-                findStatItem.break_cnt++;
+                findStatItem.stop_cnt++;
             }
         },
-        increaseStatPauseSec: (state, action: PayloadAction<string>) => {
-            let date = action.payload;
-            let findStatItem = state.items.find(statItem => statItem.date === date);
+        increaseStatPauseSec: (state) => {
+            let currentDate = moment().format('YYYY-MM-DD');
+            let findStatItem = state.items.find(statItem => statItem.date === currentDate);
 
             if (findStatItem) {
                 findStatItem.pause_sec++;
             }
         },
-        increaseStatWorkSec: (state, action: PayloadAction<string>) => {
-            let date = action.payload;
-            let findStatItem = state.items.find(statItem => statItem.date === date);
+        increaseStatWorkSec: (state) => {
+            let currentDate = moment().format('YYYY-MM-DD');
+            let findStatItem = state.items.find(statItem => statItem.date === currentDate);
 
             if (findStatItem) {
                 findStatItem.work_sec++;
@@ -65,7 +73,7 @@ export const statSlice = createSlice({
     }
 })
 
-export const {increaseStatPomodoroCounter, increaseStatBreakCounter, increaseStatPauseSec, increaseStatWorkSec} = statSlice.actions
+export const {increaseStatPomodoroCounter, increaseStatStopCounter, increaseStatPauseSec, increaseStatWorkSec, setCurrentDateEmptyItem} = statSlice.actions
 
 export const config = (state: RootState) => state.stat
 
