@@ -75,6 +75,6 @@ export const statSlice = createSlice({
 
 export const {increaseStatPomodoroCounter, increaseStatStopCounter, increaseStatPauseSec, increaseStatWorkSec, setCurrentDateEmptyItem} = statSlice.actions
 
-export const config = (state: RootState) => state.stat
+export const stat = (state: RootState) => state.stat
 
 export default statSlice.reducer

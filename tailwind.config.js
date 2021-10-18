@@ -8,7 +8,7 @@ module.exports = {
                     300: '#EA8979',
                     400: '#EE735D',
                     500: '#DC3E22',
-                    600: '#B7280F',
+                    600: '#B7280F'
                 },
                 gray: {
                     100: '#F4F4F4',
@@ -17,7 +17,16 @@ module.exports = {
                 },
                 black: '#333',
                 green: '#A8B64F',
-                darkgreen: '#899441'
+                darkgreen: '#899441',
+                yellow: {
+                    200: '#FFDDA9'
+                },
+                purple: {
+                    200: '#DFDCFE',
+                },
+                blue: {
+                    200: '#C5F1FF',
+                },
             },
             fontSize: {
                 '10xl': '9.375rem'

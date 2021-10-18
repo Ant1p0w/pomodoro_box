@@ -77,7 +77,6 @@ export const tasksSlice = createSlice({
 
 export const {addTask, deleteTask, increaseTask, decreaseTask, editTask, renameTask, finishPomodoro} = tasksSlice.actions
 
-// Other code such as selectors can use the imported `RootState` type
 export const tasks = (state: RootState) => state.tasks
 
 export default tasksSlice.reducer
