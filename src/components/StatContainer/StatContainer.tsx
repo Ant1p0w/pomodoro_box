@@ -8,6 +8,7 @@ import {StatDay} from "./StatDay";
 import {StatStop} from "./StatStop";
 import {StatPause} from "./StatPause";
 import {StatFocus} from "./StatFocus";
+import {StatChart} from "./StatChart";
 
 moment.locale('ru');
 
@@ -46,6 +47,10 @@ export function StatContainer() {
 
     }, [selectedDate]);
 
+    const handleSelectedDateHandler = (selectedDate: string) => {
+        setSelectedDate(selectedDate);
+    }
+
     return (
         <div>
             <div className={'flex justify-between items-center mb-8'}>
@@ -60,9 +65,7 @@ export function StatContainer() {
             </div>
             <div className={'grid grid-cols-4 gap-8 mb-8'}>
                 <StatDay selectedDayName={selectedDayName} workInSec={statDay.work_sec}/>
-                <div className={'col-span-3 row-span-3 bg-gray-100 p-6'}>
-                    3
-                </div>
+                <StatChart selectedDate={selectedDate} changeSelectedDate={handleSelectedDateHandler}/>
                 <StatPomodoro pomodoroCnt={statDay.pomodoro_cnt}/>
             </div>
             <div className={'grid grid-cols-3 gap-8'}>
