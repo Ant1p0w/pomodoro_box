@@ -6,7 +6,11 @@ type StatFocusProps = {
 }
 
 export function StatFocus({pauseSec, workInSec}: StatFocusProps) {
-    const focus = Math.floor(100 - (100 / workInSec * pauseSec));
+    let focus = Math.floor(100 - (100 / workInSec * pauseSec));
+
+    if(focus < 0 || isNaN(focus)){
+        focus = 0;
+    }
     return (
         <div className={'bg-yellow-200 p-6 flex items-center justify-between'}>
             <div>

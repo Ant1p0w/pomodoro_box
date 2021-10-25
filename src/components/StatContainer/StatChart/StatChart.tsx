@@ -1,74 +1,93 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import moment from "moment";
+import {useAppSelector} from "../../../hooks";
 
 type StatChartProps = {
     selectedDate: string,
     changeSelectedDate: (selectedDate: string) => void
 }
 
+type weekDay = {
+    date: string,
+    name: string,
+    active: boolean,
+    workSec: number
+}
+
+let weekdays: weekDay[] = [];
+let maxWorkSec = 0
+
 export function StatChart({selectedDate, changeSelectedDate}: StatChartProps) {
-    const weekdays = [
-        {
-            name: 'Пн',
-            active: false,
-            height: 365,
-        },
-        {
-            name: 'Вт',
-            active: false,
-            height: 0,
-        },
-        {
-            name: 'Ср',
-            active: false,
-            height: 100,
-        },
-        {
-            name: 'Чт',
-            active: true,
-            height: 150,
-        },
-        {
-            name: 'Пт',
-            active: false,
-            height: 50,
-        },
-        {
-            name: 'Сб',
-            active: false,
-            height: 30,
-        },
-        {
-            name: 'Вс',
-            active: false,
-            height: 10,
-        },
-    ];
+    const statItems = useAppSelector(state => state.stat.items);
+
+    useEffect(() => {
+        weekdays = [];
+
+        for (let dayNumber = 0; dayNumber < 7; dayNumber++) {
+            let weekDayDate = moment().weekday(dayNumber).format('YYYY-MM-DD');
+            let weekDayName = moment().weekday(dayNumber).format('ddd');
+            let workSec = 0;
+
+            //Ищем день в статистике по дате
+            let foundStatItem = statItems.find(item => item.date === weekDayDate);
+
+            if (foundStatItem) {
+                workSec = foundStatItem.work_sec;
+            }
+
+            weekdays.push({
+                date: weekDayDate,
+                name: weekDayName,
+                active: selectedDate === weekDayDate,
+                workSec: workSec
+            })
+        }
+
+        //Высчитываем максимальное время работы
+        maxWorkSec = weekdays.reduce((prev, current) => prev > current.workSec ? prev : current.workSec, 0);
+
+    }, [selectedDate]);
+
+
+    function secToTime(sec: number) {
+        let hour = Math.floor(sec / 60);
+        let min = Math.round(sec % 60);
+
+        return `${hour} ч ${min} мин`;
+    }
+
+    function calcHeight(sec: number, maxSec: number) {
+        let maxHeight = 365;
+        let height = maxHeight / maxSec * sec;
+
+        return height > 0 ? height : 5;
+    }
 
     return (
         <div className={'col-span-3 row-span-3 bg-gray-100'}>
             <div className={'pt-20 mr-32'}>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>1
-                        ч 40 мин
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        {secToTime(maxWorkSec)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>1
-                        ч 40 мин
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        {secToTime(maxWorkSec / 4 * 3)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>1
-                        ч 40 мин
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        {secToTime(maxWorkSec / 4 * 2)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>1
-                        ч 40 мин
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        {secToTime(maxWorkSec / 4)}
                     </div>
                 </div>
             </div>
@@ -76,20 +95,16 @@ export function StatChart({selectedDate, changeSelectedDate}: StatChartProps) {
                 {weekdays.map(item => {
                     let className = 'absolute w-full bottom-full mb-2 left-0';
 
-                    if(item.active){
-                        className += item.height ? ' bg-red-500' : ' bg-gray-500';
-                    }else{
-                        className += item.height ? ' bg-red-300 cursor-pointer' : ' bg-gray-400';
+                    if (item.active) {
+                        className += calcHeight(item.workSec, maxWorkSec) > 5 ? ' bg-red-500' : ' bg-gray-400';
+                    } else {
+                        className += calcHeight(item.workSec, maxWorkSec) > 5 ? ' bg-red-300' : ' bg-gray-400';
                     }
 
-                    if(item.height === 0){
-                        item.height = 5;
-                    }
                     return (
-                        <div className={'relative px-6 mx-4'}>
-                            {item.name}
-                            <div className={className}
-                                 style={{height: item.height + 'px'}}></div>
+                        <div onClick={() => {changeSelectedDate(item.date)}} className={'relative px-6 mx-4 cursor-pointer'}>
+                            <span className={item.active ? 'capitalize text-red-500' : 'capitalize'}>{item.name}</span>
+                            <div className={className} style={{height: calcHeight(item.workSec, maxWorkSec) + 'px'}}/>
                         </div>
                     )
                 })}

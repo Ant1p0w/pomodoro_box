@@ -20,6 +20,12 @@ const emptyStatDay: TStatItem = {
     pause_sec: 0,
 }
 
+export enum ChartMode {
+    CurrentWeek = 'Эта неделя',
+    LastWeek = 'Прошедшая неделя',
+    TwoWeeksAgo = '2 недели назад',
+}
+
 export function StatContainer() {
     const statItems = useAppSelector(state => state.stat.items);
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
