@@ -101,7 +101,7 @@ export function StatContainer() {
             <div className={'md:flex justify-between items-center mb-8'}>
                 <div className={'font-bold text-2xl leading-8 mb-2'}>Ваша активность</div>
                 <div className={'relative'}>
-                    <div className={'xl:w-96 py-4 px-5 bg-gray-100'} onClick={() => {
+                    <div className={'xl:w-96 py-4 px-5 bg-gray-100 dark:bg-opacity-10'} onClick={() => {
                         setIsSelectOpen(true)
                     }}>
                         <div className={'pr-32'}>
@@ -117,7 +117,7 @@ export function StatContainer() {
                     {
                         isSelectOpen && (
                             <div
-                                className={'xl:w-96 bg-gray-100 absolute w-100 top-0 left-0 filter drop-shadow-xl z-10'}>
+                                className={'xl:w-96 bg-gray-100 dark:bg-opacity-10 absolute w-100 top-0 left-0 filter drop-shadow-xl z-10'}>
                                 <div className={'absolute right-5 top-6'}>
                                     <svg width="16" height="10" viewBox="0 0 16 10" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">

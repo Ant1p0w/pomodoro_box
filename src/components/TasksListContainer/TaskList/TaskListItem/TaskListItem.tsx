@@ -31,7 +31,7 @@ export function TaskListItem({task, isMenuShownId, handleShowMenu}: ITaskListIte
             </div>
             <div>
                 {task.is_edit ?
-                    <input className={'bg-gray-100 p-1'} onKeyPress={handleSubmit} onChange={handleChange}
+                    <input className={'bg-gray-100 dark:bg-opacity-10 p-1'} onKeyPress={handleSubmit} onChange={handleChange}
                            value={taskName}/>
                     : task.name
                 }

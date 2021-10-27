@@ -13,7 +13,7 @@ export function StatDay({selectedDayName, workInSec}: StatPomodoroProps) {
     const timeString = `${hour} ${declinationOfNumber(hour, ['часа', 'часов', 'часов'])} ${min} ${declinationOfNumber(min, ['минуты', 'минут', 'минут'])}`
 
     return (
-        <div className={'bg-gray-100 2xl:row-span-2 p-6'}>
+        <div className={'bg-gray-100 dark:bg-opacity-10 2xl:row-span-2 p-6'}>
             <div className={'font-bold text-2xl leading-8 mb-2 capitalize'}>{selectedDayName}</div>
             <div>
                 Вы работали над задачами в течение <span

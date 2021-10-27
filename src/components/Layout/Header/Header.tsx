@@ -1,6 +1,7 @@
 import React from 'react';
 import LogoIcon from '../../../assets/svg/logo.svg'
 import {Link} from 'react-router-dom';
+import {ThemeSwitcher} from "./ThemeSwitcher";
 
 export function Header() {
     return (
@@ -15,7 +16,10 @@ export function Header() {
                     </div>
                 </div>
             </Link>
-            <Link to="/stat" className={'ml-auto mr-5'}>
+            <div className={'ml-auto mr-5'}>
+               <ThemeSwitcher/>
+            </div>
+            <Link to="/stat" className={'mr-5'}>
                 <div className={'flex items-center'}>
                     <svg className={'mr-1.5'} width="24" height="24" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">

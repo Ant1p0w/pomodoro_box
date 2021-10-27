@@ -79,34 +79,34 @@ export function StatChart({selectedDate, changeSelectedDate, selectedChartMode}:
     }
 
     return (
-        <div className={'xl:col-span-3 xl:row-span-3 bg-gray-100 overflow-hidden overflow-x-scroll'}>
+        <div className={'xl:col-span-3 xl:row-span-3 bg-gray-100 dark:bg-opacity-10 overflow-hidden overflow-x-scroll'}>
             <div className={'pt-20 mr-24 md:mr-28 xl:mr-32'}>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500 dark:text-gray-100'}>
                         {secToTime(maxWorkSec)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500 dark:text-gray-100'}>
                         {secToTime(maxWorkSec / 4 * 3)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500 dark:text-gray-100'}>
                         {secToTime(maxWorkSec / 4 * 2)}
                     </div>
                 </div>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
-                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
+                        className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500 dark:text-gray-100'}>
                         {secToTime(maxWorkSec / 4)}
                     </div>
                 </div>
             </div>
-            <div className={'flex bg-gray-200 xl:text-2xl leading-8 text-gray-300 py-2 px-4 xl:px-16'}>
+            <div className={'flex bg-gray-200 xl:text-2xl leading-8 text-gray-300  dark:bg-opacity-10  py-2 px-4 xl:px-16'}>
                 {weekdays.map(item => {
                     let className = 'absolute w-full bottom-full mb-2 left-0';
 

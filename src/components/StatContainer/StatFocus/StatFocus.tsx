@@ -12,7 +12,7 @@ export function StatFocus({pauseSec, workInSec}: StatFocusProps) {
         focus = 0;
     }
     return (
-        <div className={'bg-yellow-200 p-6 flex items-center justify-between'}>
+        <div className={'bg-yellow-200 dark:bg-opacity-10 p-6 flex items-center justify-between'}>
             <div>
                 <div className={'font-bold text-2xl mb-2.5'}>
                     Фокус

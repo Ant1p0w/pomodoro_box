@@ -218,7 +218,7 @@ export function TaskContainer() {
 
     return (
         <div className={'col-span-2'}>
-            <div className={'bg-gray-100 pb-8'}>
+            <div className={'bg-gray-100 dark:bg-opacity-10 pb-8'}>
                 <div className={headClasses}>
                     <div>{task.name}</div>
                     {isTimeToBreak ?

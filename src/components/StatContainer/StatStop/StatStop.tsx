@@ -7,7 +7,7 @@ type StatStopProps = {
 
 export function StatStop({stopCnt}: StatStopProps) {
     return (
-        <div className={'bg-blue-200 p-6 flex items-center justify-between'}>
+        <div className={'bg-blue-200  dark:bg-opacity-10  p-6 flex items-center justify-between'}>
             <div>
                 <div className={'font-bold text-2xl mb-2.5'}>
                     Остановки

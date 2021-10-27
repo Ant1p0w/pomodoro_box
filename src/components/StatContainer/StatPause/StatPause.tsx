@@ -9,7 +9,7 @@ export function StatPause({pauseSec}: StatPauseProps) {
     const min = pauseSec % 60;
 
     return (
-        <div className={'bg-purple-200 p-6 flex items-center justify-between'}>
+        <div className={'bg-purple-200  dark:bg-opacity-10  p-6 flex items-center justify-between'}>
             <div>
                 <div className={'font-bold text-2xl mb-2.5'}>
                     Время на паузе

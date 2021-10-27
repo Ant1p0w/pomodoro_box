@@ -8,7 +8,7 @@ type StatPomodoroProps = {
 
 export function StatPomodoro({pomodoroCnt} : StatPomodoroProps) {
     return (
-        <div className={'bg-gray-100 flex flex-col'}>
+        <div className={'bg-gray-100 dark:bg-opacity-10 flex flex-col'}>
             <div className={'p-6 flex items-center gap-2 justify-center my-auto'}>
                 <svg width="81" height="81" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clipPath="url(#clip0_16:413)">

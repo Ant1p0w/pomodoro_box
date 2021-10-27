@@ -41,21 +41,21 @@ export function ConfigContainer() {
             <div className={'mb-6'}>
                 <label>
                     <div>Продолжительность «помидора»:</div>
-                    <input className={'w-80 bg-gray-100 py-4 px-5'} type="number" min="1" value={pomodoroInMinValue}
+                    <input className={'w-80 bg-gray-100 dark:bg-opacity-10 py-4 px-5'} type="number" min="1" value={pomodoroInMinValue}
                            onChange={handlePomodoroChange}/>
                 </label>
             </div>
             <div className={'mb-6'}>
                 <label>
                     <div>Продолжительность короткого перерыва:</div>
-                    <input className={'w-80 bg-gray-100 py-4 px-5'} type="number" min="1" value={smallBreakTimeValue}
+                    <input className={'w-80 bg-gray-100 dark:bg-opacity-10 py-4 px-5'} type="number" min="1" value={smallBreakTimeValue}
                            onChange={handleSmallBreakTimeValueChange}/>
                 </label>
             </div>
             <div className={'mb-6'}>
                 <label>
                     <div>Продолжительность длинного перерыва:</div>
-                    <input className={'w-80 bg-gray-100 py-4 px-5'} type="number" min="1" value={largeBreakTimeValue}
+                    <input className={'w-80 bg-gray-100 dark:bg-opacity-10 py-4 px-5'} type="number" min="1" value={largeBreakTimeValue}
                            onChange={handleLargeBreakTimeValueChange}/>
                 </label>
             </div>
