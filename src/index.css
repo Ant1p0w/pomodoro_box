@@ -16,4 +16,19 @@
         border-color: #C4C4C4;
         color: #C4C4C4;
     }
+
+    .transition-item-enter {
+        opacity: 0;
+    }
+    .transition-item-enter-active {
+        opacity: 1;
+        transition: opacity 500ms ease-in;
+    }
+    .transition-item-exit {
+        opacity: 1;
+    }
+    .transition-item-exit-active {
+        opacity: 0;
+        transition: opacity 500ms ease-in;
+    }
 }

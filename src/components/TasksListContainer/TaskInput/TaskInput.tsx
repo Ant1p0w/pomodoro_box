@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {addTask} from '../../../features/tasks/tasksSlice'
-import {useAppDispatch, useAppSelector} from '../../../hooks'
+import {useAppDispatch} from '../../../hooks'
 import {generateGuid} from "../../../helpers/generateUuid";
 
 export function TaskInput() {
@@ -15,6 +15,12 @@ export function TaskInput() {
         is_edit: false
     };
 
+    function handleSubmit(event: React.KeyboardEvent) {
+        if (event.code === 'Enter') {
+            addNewTask();
+        }
+    }
+
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setTaskName(event.target.value);
     }
@@ -27,7 +33,8 @@ export function TaskInput() {
     return (
         <div className={'mb-6'}>
             <div className={'mb-6'}>
-                <input value={taskName} onChange={handleChange} className={'w-80 bg-gray-100 py-4 px-5'}
+                <input onKeyPress={handleSubmit} value={taskName} onChange={handleChange}
+                       className={'w-80 bg-gray-100 py-4 px-5'}
                        placeholder="Название задачи" required/>
             </div>
             <button onClick={addNewTask} className={'bg-green hover:bg-darkgreen py-4 px-12 text-white'}>Добавить
