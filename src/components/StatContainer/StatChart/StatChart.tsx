@@ -79,8 +79,8 @@ export function StatChart({selectedDate, changeSelectedDate, selectedChartMode}:
     }
 
     return (
-        <div className={'col-span-3 row-span-3 bg-gray-100'}>
-            <div className={'pt-20 mr-32'}>
+        <div className={'xl:col-span-3 xl:row-span-3 bg-gray-100 overflow-hidden overflow-x-scroll'}>
+            <div className={'pt-20 mr-24 md:mr-28 xl:mr-32'}>
                 <div className={'relative mb-20 bg-gray-400 h-px'}>
                     <div
                         className={'absolute left-full whitespace-nowrap transform -translate-y-2/4 pl-8 text-xs text-gray-500'}>
@@ -106,7 +106,7 @@ export function StatChart({selectedDate, changeSelectedDate, selectedChartMode}:
                     </div>
                 </div>
             </div>
-            <div className={'flex bg-gray-200 text-2xl leading-8 text-gray-300 py-2 px-16'}>
+            <div className={'flex bg-gray-200 xl:text-2xl leading-8 text-gray-300 py-2 px-4 xl:px-16'}>
                 {weekdays.map(item => {
                     let className = 'absolute w-full bottom-full mb-2 left-0';
 
@@ -117,7 +117,7 @@ export function StatChart({selectedDate, changeSelectedDate, selectedChartMode}:
                     }
 
                     return (
-                        <div key={item.date} onClick={() => {changeSelectedDate(item.date)}} className={'relative px-6 mx-4 cursor-pointer'}>
+                        <div key={item.date} onClick={() => {changeSelectedDate(item.date)}} className={'relative mx-2 md:px-4 xl:px-6 xl:mx-4 cursor-pointer'}>
                             <span className={item.active ? 'capitalize text-red-500' : 'capitalize'}>{item.name}</span>
                             <div className={className} style={{height: calcHeight(item.workSec, maxWorkSec) + 'px'}}/>
                         </div>

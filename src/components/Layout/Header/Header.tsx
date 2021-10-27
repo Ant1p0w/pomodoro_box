@@ -21,7 +21,7 @@ export function Header() {
                          xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 20H14V4H10V20ZM4 20H8V12H4V20ZM16 9V20H20V9H16Z" fill="#DC3E22"/>
                     </svg>
-                    <span className={'text-red-500'}>
+                    <span className={'hidden md:block text-red-500'}>
                         Статистика
                     </span>
                 </div>
@@ -44,7 +44,7 @@ export function Header() {
 			 M22.976,30.85c-4.378,0-7.928-3.517-7.928-7.852c0-4.338,3.55-7.85,7.928-7.85c4.379,0,7.931,3.512,7.931,7.85
 			C30.906,27.334,27.355,30.85,22.976,30.85z"/>
                     </svg>
-                    <span className={'text-red-500'}>
+                    <span className={'hidden md:block text-red-500'}>
                         Настройки
                     </span>
                 </div>

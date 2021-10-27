@@ -210,7 +210,7 @@ export function TaskContainer() {
     );
 
     const textCounterClasses = classNames(
-        'text-10xl font-extralight',
+        'text-8xl xl:text-10xl font-extralight',
         {
             'text-red-500': isStarted,
         },

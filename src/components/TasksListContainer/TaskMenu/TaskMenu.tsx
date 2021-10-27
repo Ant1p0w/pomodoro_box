@@ -43,7 +43,7 @@ export function TaskMenu({isOpen, task}: ITaskMenuProps) {
     }
 
     return (
-        <div className={'absolute top-8 z-10 bg-white border transform -translate-x-2/4 left-1/2'}>
+        <div className={'absolute top-8 z-10 bg-white border transform right-0 xl:right-auto xl:-translate-x-2/4 xl:left-1/2'}>
             <ul>
                 <li className={itemClassList} onClick={handleIncreaseTask}>
                     <IconIncrease/>

@@ -98,13 +98,13 @@ export function StatContainer() {
 
     return (
         <div>
-            <div className={'flex justify-between items-center mb-8'}>
+            <div className={'md:flex justify-between items-center mb-8'}>
                 <div className={'font-bold text-2xl leading-8 mb-2'}>Ваша активность</div>
                 <div className={'relative'}>
-                    <div className={'xl:w-96 py-4 px-5 bg-gray-100 '} onClick={() => {
+                    <div className={'xl:w-96 py-4 px-5 bg-gray-100'} onClick={() => {
                         setIsSelectOpen(true)
                     }}>
-                        <div>
+                        <div className={'pr-32'}>
                             {ChartModes.find(chartMode => chartMode.value === selectedChartMode)?.name}
                         </div>
                         <div className={'absolute right-5 top-6'}>
@@ -143,12 +143,12 @@ export function StatContainer() {
                     }
                 </div>
             </div>
-            <div className={'grid grid-cols-4 gap-8 mb-8'}>
+            <div className={'grid xl:grid-cols-4 gap-8 mb-8'}>
                 <StatDay selectedDayName={selectedDayName} workInSec={statDay.work_sec}/>
                 <StatChart selectedDate={selectedDate} selectedChartMode={selectedChartMode} changeSelectedDate={handleSelectedDateHandler}/>
                 <StatPomodoro pomodoroCnt={statDay.pomodoro_cnt}/>
             </div>
-            <div className={'grid grid-cols-3 gap-8'}>
+            <div className={'grid xl:grid-cols-3 gap-8'}>
                 <StatFocus pauseSec={statDay.pause_sec} workInSec={statDay.work_sec}/>
                 <StatPause pauseSec={statDay.pause_sec}/>
                 <StatStop stopCnt={statDay.stop_cnt}/>
