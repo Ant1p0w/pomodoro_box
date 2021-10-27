@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 import moment from "moment";
 import {useAppSelector} from "../../../hooks";
+import {ChartMode} from "../StatContainer";
 
 type StatChartProps = {
     selectedDate: string,
+    selectedChartMode: ChartMode,
     changeSelectedDate: (selectedDate: string) => void
 }
 
@@ -17,15 +19,28 @@ type weekDay = {
 let weekdays: weekDay[] = [];
 let maxWorkSec = 0
 
-export function StatChart({selectedDate, changeSelectedDate}: StatChartProps) {
+export function StatChart({selectedDate, changeSelectedDate, selectedChartMode}: StatChartProps) {
     const statItems = useAppSelector(state => state.stat.items);
 
     useEffect(() => {
         weekdays = [];
+        let subtractDays = 0;
+
+        switch (selectedChartMode){
+            case ChartMode.CurrentWeek:
+                subtractDays = 0
+                break;
+            case ChartMode.LastWeek:
+                subtractDays = 7
+                break;
+            case ChartMode.TwoWeeksAgo:
+                subtractDays = 14;
+                break;
+        }
 
         for (let dayNumber = 0; dayNumber < 7; dayNumber++) {
-            let weekDayDate = moment().weekday(dayNumber).format('YYYY-MM-DD');
-            let weekDayName = moment().weekday(dayNumber).format('ddd');
+            let weekDayDate = moment().subtract(subtractDays, 'days').weekday(dayNumber).format('YYYY-MM-DD');
+            let weekDayName = moment().subtract(subtractDays, 'days').weekday(dayNumber).format('ddd');
             let workSec = 0;
 
             //Ищем день в статистике по дате
@@ -46,7 +61,7 @@ export function StatChart({selectedDate, changeSelectedDate}: StatChartProps) {
         //Высчитываем максимальное время работы
         maxWorkSec = weekdays.reduce((prev, current) => prev > current.workSec ? prev : current.workSec, 0);
 
-    }, [selectedDate]);
+    }, [selectedDate, selectedChartMode]);
 
 
     function secToTime(sec: number) {
@@ -102,7 +117,7 @@ export function StatChart({selectedDate, changeSelectedDate}: StatChartProps) {
                     }
 
                     return (
-                        <div onClick={() => {changeSelectedDate(item.date)}} className={'relative px-6 mx-4 cursor-pointer'}>
+                        <div key={item.date} onClick={() => {changeSelectedDate(item.date)}} className={'relative px-6 mx-4 cursor-pointer'}>
                             <span className={item.active ? 'capitalize text-red-500' : 'capitalize'}>{item.name}</span>
                             <div className={className} style={{height: calcHeight(item.workSec, maxWorkSec) + 'px'}}/>
                         </div>

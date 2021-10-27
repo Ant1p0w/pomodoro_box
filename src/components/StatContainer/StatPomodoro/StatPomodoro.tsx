@@ -11,7 +11,7 @@ export function StatPomodoro({pomodoroCnt} : StatPomodoroProps) {
         <div className={'bg-gray-100 flex flex-col'}>
             <div className={'p-6 flex items-center gap-2 justify-center my-auto'}>
                 <svg width="81" height="81" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_16:413)">
+                    <g clipPath="url(#clip0_16:413)">
                         <path
                             d="M78.8031 47.4452C78.8031 68.5505 61.6937 81.2964 40.5884 81.2964C19.4825 81.2964 2.37305 64.187 2.37305 43.081C2.37305 21.9757 20.017 9 41.1223 9C62.2283 9 78.8031 26.3393 78.8031 47.4452Z"
                             fill="#DC3E22"/>
