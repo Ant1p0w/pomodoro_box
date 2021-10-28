@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# Pomodoro task tracker
+Online demo [here](https://pomodoro-box-app.herokuapp.com/).
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
